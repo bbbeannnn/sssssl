@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SLORG — Sloped Landscape Organism Research Group. An interdisciplinary spatial and performative practice by Lina Bondarenko interrogating how terrain choreographs bodies, cultures, and our relationship to nature.">
+  <meta property="og:title" content="SSSSSSL — SLORG">
+  <meta property="og:description" content="Sloped Landscape Organism Research Group — Lina Bondarenko">
+  <title>SSSSSSL — Sloped Landscape Organism Research Group</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── INDEX-ONLY STYLES ── */
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .splash {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 640px;
+      padding: 2.5rem 2rem 5rem;
+      margin: 0 auto;
+    }
+
+    /* ── STACK ── */
+    .stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .zone {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 1.25rem;
+      cursor: pointer;
+      padding: 3px 0;
+      width: 100%;
+      transition: opacity 0.6s var(--ease-soft);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .stack.has-hover .zone:not(.hovered),
+    .stack.has-hover .l-row:not(.hovered) { opacity: 0.04; }
+
+    .s-wrap {
+      width: 68px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .glyph {
+      font-family: var(--sans);
+      font-weight: 100;
+      font-size: clamp(52px, 10vw, 76px);
+      color: var(--sand);
+      line-height: 1;
+      display: block;
+      transform: rotate(-90deg);
+      user-select: none;
+      transition: color 0.5s var(--ease-soft);
+      letter-spacing: -0.02em;
+    }
+
+    .zone.hovered .glyph,
+    .l-row.hovered .glyph { color: var(--vermillion); }
+
+    .zone-right {
+      display: flex;
+      flex-direction: column;
+      padding-top: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sub-name {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(15px, 2.4vw, 21px);
+      color: var(--sand-dim);
+      line-height: 1.2;
+      transition: color 0.5s var(--ease-soft);
+    }
+
+    .zone.hovered .sub-name,
+    .l-row.hovered .sub-name { color: var(--sand); }
+
+    /* ── HOVER REVEAL ── */
+    .hover-block {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      margin-top: 0;
+      transition:
+        grid-template-rows 0.6s var(--ease-flow),
+        opacity           0.5s var(--ease-flow),
+        margin-top        0.5s var(--ease-flow);
+    }
+
+    .zone.hovered .hover-block,
+    .l-row.hovered .hover-block {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      margin-top: 5px;
+      transition-delay: 0.04s;
+    }
+
+    .hover-inner { overflow: hidden; }
+
+    .hover-heading {
+      font-family: var(--sans);
+      font-weight: 200;
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--vermillion);
+      opacity: 0.85;
+      margin-bottom: 7px;
+      padding-top: 2px;
+      display: block;
+    }
+
+    .hover-desc {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 12px;
+      color: rgba(230, 217, 184, 0.38);
+      line-height: 1.8;
+      margin-bottom: 10px;
+      max-width: 400px;
+    }
+
+    .hover-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px 22px;
+      padding-bottom: 6px;
+    }
+
+    .hover-links a {
+      font-family: var(--sans);
+      font-weight: 200;
+      font-size: 9px;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+      color: rgba(230, 217, 184, 0.5);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .hover-links a::before {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 0.5px;
+      background: currentColor;
+      opacity: 0.5;
+      flex-shrink: 0;
+      transition: width 0.25s ease;
+    }
+
+    .hover-links a:hover { color: var(--sand); }
+    .hover-links a:hover::before { width: 16px; opacity: 1; }
+
+    /* ── L ROW ── */
+    .l-row {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 1.25rem;
+      padding: 3px 0;
+      cursor: pointer;
+      width: 100%;
+      transition: opacity 0.6s var(--ease-soft);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .l-wrap {
+      width: 68px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .l-glyph {
+      font-family: var(--sans);
+      font-weight: 100;
+      font-size: clamp(52px, 10vw, 76px);
+      color: var(--sand);
+      line-height: 1;
+      display: block;
+      transform: rotate(-90deg);
+      user-select: none;
+      letter-spacing: -0.02em;
+      opacity: 0.22;
+      transition: color 0.5s var(--ease-soft), opacity 0.5s var(--ease-soft);
+    }
+
+    .l-row.hovered .l-glyph { color: var(--vermillion); opacity: 1; }
+
+    .l-right {
+      display: flex;
+      flex-direction: column;
+      padding-top: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .l-name {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(15px, 2.4vw, 21px);
+      color: var(--sand-ghost);
+      line-height: 1.2;
+      transition: color 0.5s var(--ease-soft);
+    }
+
+    .l-row.hovered .l-name { color: var(--sand); }
+
+    /* ── FOOTER ── */
+    .index-footer {
+      position: fixed;
+      bottom: 1.1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      white-space: nowrap;
+      z-index: 1;
+    }
+
+    .index-footer .slorg-word {
+      font-family: var(--sans);
+      font-weight: 100;
+      font-size: 9px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(230, 217, 184, 0.13);
+      display: block;
+    }
+
+    .index-footer .slorg-full {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      color: rgba(230, 217, 184, 0.07);
+      display: block;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 480px) {
+      .s-wrap, .l-wrap { width: 52px; }
+      .glyph, .l-glyph { font-size: 56px; }
+      .splash { padding: 2rem 1.25rem 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HATCH TEXTURE -->
+  <svg class="hatch-bg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(40)">
+        <line x1="0" y1="0" x2="0" y2="10" stroke="#E6D9B8" stroke-width="0.4"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#hatch)"/>
+  </svg>
+
+  <div class="splash">
+    <div class="stack" id="stack">
+
+      <!-- ═══════════════════════════════════════
+           EDIT YOUR CATEGORIES AND PROJECTS HERE
+           ═══════════════════════════════════════ -->
+
+      <!-- S1 — SEARCHING -->
+      <div class="zone">
+        <div class="s-wrap"><span class="glyph">S</span></div>
+        <div class="zone-right">
+          <span class="sub-name">Searching</span>
+          <div class="hover-block"><div class="hover-inner">
+            <span class="hover-heading">Research and Philosophy</span>
+            <p class="hover-desc">Inquiry into slope as a generative metaphor and material condition, using feminist geography, environmental history, and sensory methods to critique flattening, abstraction, and land-as-property systems.</p>
+            <div class="hover-links">
+              <a href="projects/thesiSSSSSSSSS.html">thesiSSSSSSSSSS</a>
+              <a href="projects/basket-contains-no-bread.html">The Basket Contains No Bread</a>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- S2 — SLOPED ORGANISM -->
+      <div class="zone">
+        <div class="s-wrap"><span class="glyph">S</span></div>
+        <div class="zone-right">
+          <span class="sub-name">Sloped Organism</span>
+          <div class="hover-block"><div class="hover-inner">
+            <span class="hover-heading">Site-Specific Dance Performances</span>
+            <p class="hover-desc">Performances that treat the body as a sensorial instrument for slope, working through proprioception, balance, weight, gravity, and terrain as choreography.</p>
+            <div class="hover-links">
+              <a href="projects/solstice-slorg.html">Solstice Slorg</a>
+              <a href="projects/solar-slorg.html">Solar Slorg</a>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- S3 — SOCIAL SCORES -->
+      <div class="zone">
+        <div class="s-wrap"><span class="glyph">S</span></div>
+        <div class="zone-right">
+          <span class="sub-name">Social Scores</span>
+          <div class="hover-block"><div class="hover-inner">
+            <span class="hover-heading">Participatory Steep Urban Happenings</span>
+            <p class="hover-desc">Public scores, happenings, and workshops that use walking, listening, and collective movement to turn urban infrastructure in steep terrain into shared stages for embodied and historical encounter.</p>
+            <div class="hover-links">
+              <a href="projects/slope-scene.html">Slope Scene</a>
+              <a href="projects/slope-serenade.html">Slope Serenade</a>
+              <a href="projects/steep-urbanist-semaphore.html">Steep Urbanist Semaphore</a>
+              <a href="projects/steep-urbanist-sanchez.html">Steep Urbanist Sanchez</a>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- S4 — SPACES AND STRUCTURES -->
+      <div class="zone">
+        <div class="s-wrap"><span class="glyph">S</span></div>
+        <div class="zone-right">
+          <span class="sub-name">Spaces and Structures</span>
+          <div class="hover-block"><div class="hover-inner">
+            <span class="hover-heading">Architectural Design</span>
+            <p class="hover-desc">Built work where slope is generatively negotiated through steps, terraces, retaining walls, sections, and site-responsive design.</p>
+            <div class="hover-links">
+              <a href="projects/modular-slope.html">Modular Slope</a>
+              <a href="projects/cantilevered-slope.html">Cantilevered Slope</a>
+              <a href="projects/subslope.html">Subslope</a>
+              <a href="projects/canopy-hill.html">Canopy Hill</a>
+              <a href="projects/dip-slope.html">Dip Slope</a>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- S5 — SCHEMES -->
+      <div class="zone">
+        <div class="s-wrap"><span class="glyph">S</span></div>
+        <div class="zone-right">
+          <span class="sub-name">Schemes</span>
+          <div class="hover-block"><div class="hover-inner">
+            <span class="hover-heading">Strategy, Design, and Art</span>
+            <p class="hover-desc">Hybrid works across installation, site-specific art, production design, and graphics that materialize ecological research and make land-body relations tangible.</p>
+            <div class="hover-links">
+              <a href="projects/sunflowers-in-black-earth.html">Sunflowers in Black Earth</a>
+              <a href="projects/seed-projects.html">Seed Projects</a>
+              <a href="projects/solar-eclipse.html">Solar Eclipse</a>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- L — LINA IN LANDSCAPES -->
+      <div class="l-row" id="lrow">
+        <div class="l-wrap"><span class="l-glyph">L</span></div>
+        <div class="l-right">
+          <span class="l-name">Lina in Landscapes</span>
+          <div class="hover-block"><div class="hover-inner">
+            <span class="hover-heading">Biography, Process, and Place</span>
+            <p class="hover-desc">Lina Bondarenko is an artist, dancer, architect, researcher, and educator whose practice takes the sloped landscape as its central site and subject in perpetual curiosity for how slope geomorphology shapes urban history and value systems.</p>
+            <div class="hover-links">
+              <a href="projects/san-francisco.html">San Francisco</a>
+              <a href="projects/cambridge.html">Cambridge</a>
+              <a href="projects/norway.html">Norway</a>
+              <a href="projects/ukraine.html">Ukraine</a>
+              <a href="projects/biography.html">Full biography</a>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           END EDITABLE CONTENT
+           ═══════════════════════════════════════ -->
+
+    </div>
+  </div>
+
+  <div class="index-footer">
+    <span class="slorg-word">SLORG</span>
+    <span class="slorg-full">Sloped Landscape Organism Research Group</span>
+  </div>
+
+  <script>
+    const stack = document.getElementById('stack');
+    const zones = document.querySelectorAll('.stack .zone');
+    const lrow  = document.getElementById('lrow');
+    const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
+
+    function activate(el) {
+      stack.classList.add('has-hover');
+      zones.forEach(o => o.classList.remove('hovered'));
+      lrow.classList.remove('hovered');
+      el.classList.add('hovered');
+    }
+
+    function deactivate(el) {
+      el.classList.remove('hovered');
+      if (!document.querySelector('.hovered')) {
+        stack.classList.remove('has-hover');
+      }
+    }
+
+    function clearAll() {
+      zones.forEach(o => o.classList.remove('hovered'));
+      lrow.classList.remove('hovered');
+      stack.classList.remove('has-hover');
+    }
+
+    // Desktop: hover
+    [...zones, lrow].forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        if (!isTouchDevice()) activate(el);
+      });
+      el.addEventListener('mouseleave', () => {
+        if (!isTouchDevice()) deactivate(el);
+      });
+    });
+
+    // Mobile: tap to open, tap again to close
+    [...zones, lrow].forEach(el => {
+      el.addEventListener('click', (e) => {
+        if (!isTouchDevice()) return;
+        const isActive = el.classList.contains('hovered');
+        clearAll();
+        if (!isActive) activate(el);
+        e.stopPropagation();
+      });
+    });
+
+    document.addEventListener('click', () => {
+      if (isTouchDevice()) clearAll();
+    });
+  </script>
+
+</body>
+</html>
