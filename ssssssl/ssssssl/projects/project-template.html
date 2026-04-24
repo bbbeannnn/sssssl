@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ═══════════════════════════════════════════════
+       EDIT: update title and description for each project
+       ═══════════════════════════════════════════════ -->
+  <meta name="description" content="Project description for SEO — one or two sentences about this specific project.">
+  <title>Project Title — SLORG</title>
+
+  <!-- Path back to shared styles — keep as ../ if this file is inside /projects/ -->
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <!-- HATCH TEXTURE -->
+  <svg class="hatch-bg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(40)">
+        <line x1="0" y1="0" x2="0" y2="10" stroke="#E6D9B8" stroke-width="0.4"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#hatch)"/>
+  </svg>
+
+  <!-- TOP NAV -->
+  <nav class="back-nav">
+    <a href="../index.html" class="back-link">SSSSSSL</a>
+    <a href="../index.html" class="site-id">SLORG</a>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════
+       MAIN PROJECT CONTENT — edit everything below
+       ═══════════════════════════════════════════════ -->
+  <main class="project-page">
+
+    <!-- Category label (vermillion, all caps) -->
+    <span class="project-category">Site Specific Dance Performances</span>
+
+    <!-- Project title -->
+    <h1 class="project-title">Solstice Slorg</h1>
+
+    <div class="project-divider"></div>
+
+    <!-- ── MEDIA GRID ──────────────────────────────
+         Replace .placeholder divs with real media.
+
+         For an image:
+           <div class="media-item">
+             <img src="../media/solstice-slorg-01.jpg" alt="Brief description">
+           </div>
+
+         For a video:
+           <div class="media-item">
+             <video src="../media/solstice-slorg-01.mp4" autoplay muted loop playsinline></video>
+           </div>
+
+         For a Vimeo embed, use an <iframe> inside the media-item div.
+         Remove as many or as few slots as you need.
+    ──────────────────────────────────────────────── -->
+    <div class="media-grid">
+      <div class="media-item placeholder" data-label="image or video"></div>
+      <div class="media-item placeholder" data-label="image or video"></div>
+      <div class="media-item placeholder" data-label="image or video"></div>
+    </div>
+
+    <!-- ── PROJECT BODY ── -->
+    <div class="project-body">
+
+      <!-- LEFT COLUMN: metadata -->
+      <dl class="project-meta-col">
+
+        <div class="meta-block">
+          <dt>Year</dt>
+          <dd>2023</dd>
+        </div>
+
+        <div class="meta-block">
+          <dt>Location</dt>
+          <dd>Bernal Hill,<br>San Francisco</dd>
+        </div>
+
+        <div class="meta-block">
+          <dt>Duration</dt>
+          <dd>45 minutes</dd>
+        </div>
+
+        <div class="meta-block">
+          <dt>Collaborators</dt>
+          <dd><!-- names here --></dd>
+        </div>
+
+        <!-- Add or remove meta-block entries as needed -->
+
+      </dl>
+
+      <!-- RIGHT COLUMN: project text -->
+      <div class="project-text-col">
+
+        <!-- First paragraph is styled slightly larger and italic — use it as a lead sentence -->
+        <p>A brief, evocative opening sentence that captures the essence of the work in one or two lines.</p>
+
+        <p>Longer description of the project — context, process, intent. Write as much or as little as feels right. This text is what gets indexed by search engines so make it substantive.</p>
+
+        <p>A third paragraph for additional context, documentation notes, or critical framing if needed.</p>
+
+      </div>
+    </div>
+
+    <!-- ── PREV / NEXT NAV ──
+         Update href and text for each project page.
+         Remove the one you don't need (first project has no prev, last has no next).
+    ── -->
+    <nav class="project-nav">
+      <a href="solar-slorg.html" class="prev">Solar Slorg</a>
+      <a href="../index.html" class="next">All work</a>
+    </nav>
+
+  </main>
+
+  <!-- LIGHTBOX (activated by JS below) -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close">close</span>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <footer class="site-footer">
+    <span class="slorg-word">SLORG</span>
+    <span class="slorg-full">Sloped Landscape Organism Research Group</span>
+  </footer>
+
+  <script>
+    // Lightbox — clicking any .media-item img opens it full screen
+    const lightbox    = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    document.querySelectorAll('.media-item img').forEach(img => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('open');
+      });
+    });
+
+    lightbox.addEventListener('click', () => lightbox.classList.remove('open'));
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') lightbox.classList.remove('open');
+    });
+  </script>
+
+</body>
+</html>
